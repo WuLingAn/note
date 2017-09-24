@@ -1,0 +1,59 @@
+#纯函数
+定义：对于相同的输入，永远会得到相同的输出，而且没有任何可观察的副作用，并且不依赖外部环境的状态。
+var arr = [1,2,3,4,5];
+
+// Array.slice是纯函数，因为它没有副作用，对于固定的输入，输出总是固定的
+// 可以，这很函数式xs.slice(0,3);//=> [1,2,3]xs.slice(0,3);
+//=> [1,2,3]
+// Array.splice是不纯的，它有副作用，对于固定的输入，输出不是固定的
+// 这不函数式
+xs.splice(0,3);
+//=> [1,2,3]
+xs.splice(0,3);
+//=> [4,5]
+xs.splice(0,3);
+//=> []
+函数柯里化
+传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。
+//比较容易读懂的ES5写法
+var add = function(x){
+    return function(y){
+        return x + y
+    }
+}
+
+//ES6写法，也是比较正统的函数式写法
+var add = x => (y => x + y);
+
+//试试看
+var add2 = add(2);
+var add200 = add(200);
+
+add2(2); // =>4
+add200(50); // =>250
+事实上柯里化是一种“预加载”函数的方法，通过传递较少的参数，得到一个已经记住了这些参数的新函数，某种意义上讲，这是一种对参数的“缓存”，是一种非常高效的编写函数的方法。
+函数组合
+//两个函数的组合
+var compose = function(f, g) {
+    return function(x) {
+        return f(g(x));
+    };
+};
+
+//或者
+var compose = (f, g) => (x => f(g(x)));
+
+var add1 = x => x + 1;
+var mul5 = x => x * 5;
+
+compose(mul5, add1)(2);
+// =>15
+Free Point
+将对象自带方法转化成纯函数。不要命名转瞬即逝的中间变量。
+var f = str => str.toUpperCase().split(' ');
+
+
+
+
+---
+<!--<meta http-equiv="refresh" content="0.5">-->
